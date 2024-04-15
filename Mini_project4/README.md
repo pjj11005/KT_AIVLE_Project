@@ -29,11 +29,11 @@
     - VGGNet 절반 정도 비슷한 구조로 모델링 (299 X 299)
     - 성능 측정 결과(Colab)
         
-        ![Untitled](/Mini_projects4/images/001.png)
+        ![Untitled](/Mini_project4/Vehicle_damage_classification/images/001.png)
         
     - 성능 측정 결과(Local)
         
-        ![Untitled](/Mini_projects4/images/002.png)
+        ![Untitled](/Mini_project4/Vehicle_damage_classification/images/002.png)
         
 2. 모델 2
     - **Inception V3 (299 X 299)**
@@ -47,7 +47,7 @@
         
         - Test Loss: 0.062309, Test Accuracy: 98.361%
         
-        ![Untitled](/Mini_projects4/images/003.png)
+        ![Untitled](/Mini_project4/Vehicle_damage_classification/images/003.png)
         
         2) augmentation layer 추가
         
@@ -62,7 +62,7 @@
         
         - Test Loss: 0.042640, Test Accuracy: 100.000%
         
-        ![Untitled](/Mini_projects4/images/004.png)
+        ![Untitled](/Mini_project4/Vehicle_damage_classification/images/004.png)
         
 
 ## 2일차
@@ -81,7 +81,7 @@
         
         - Test Loss: 0.083299, Test Accuracy: 96.721%
             
-            ![Untitled](/Mini_projects4/images/005.png)
+            ![Untitled](/Mini_project4/Vehicle_damage_classification/images/005.png)
             
         - (299 X 299)에서 성능이 더 좋았다
 2. 모델 3
@@ -89,23 +89,23 @@
         - 성능 측정 결과(Colab)
             - Test Loss: 0.088342, Test Accuracy: 98.361%
                 
-                ![Untitled](/Mini_projects4/images/006.png)
+                ![Untitled](/Mini_project4/Vehicle_damage_classification/images/006.png)
                 
         - 성능 측정 결과(Local)
             - Test Loss: 0.063890, Test Accuracy: 98.361%
                 
-                ![Untitled](/Mini_projects4/images/007.png)
+                ![Untitled](/Mini_project4/Vehicle_damage_classification/images/007.png)
                 
     - VGG 19 (224 X 224)
         - 성능 측정 결과(Colab)
             - Test Loss: 0.065522, Test Accuracy: 96.721%
                 
-                ![Untitled](/Mini_projects4/images/008.png)
+                ![Untitled](/Mini_project4/Vehicle_damage_classification/images/008.png)
                 
         - 성능 측정 결과(Local)
             - Test Loss: 0.027519, Test Accuracy: 100.000%
                 
-                ![Untitled](/Mini_projects4/images/009.png)
+                ![Untitled](/Mini_project4/Vehicle_damage_classification/images/009.png)
                 
 
 ### 다른 조들의 방법
