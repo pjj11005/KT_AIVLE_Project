@@ -138,3 +138,179 @@
 
 - 시계열 데이터 예측 모델링에서는 날짜의 요소가 중요했고, 추이를 확인해보는 것이 중요하다
 - 더 많은 데이터가 있었다면 좋은 성능의 모델을 만들 수 있었을 것 같다
+
+## 4일차
+
+### 프로젝트 개요
+
+- 주제: LLM을 활용한 간단한 QA챗봇 구현
+- 동작 방식
+    1. 질문하기
+    2. 질문에 해당하는 문서 검색(BM25 or Sentence BERT)
+    3. 질문과 검색된 문서를 기반으로 LLM에게 질문할 프롬프트 구성
+    4. 프롬프트를 이용하여 LLM에게 질문
+    5. LLM 답변 사용자에게 전달
+
+### 데이터 소개
+
+- NSMC(네이버 영화 리뷰 감정 분류)
+
+### 수행 절차 및 조건
+
+- SLLM SFT(Small Large Language Model SFT)
+- Hugging Face
+    - Access Token: 일부 라이센스가 있는 모델을 사용하거나 API 레벨의 권한이 필요할 때 사용
+    - Transformers
+        - 공개된 유명 아키텍처 코드 지원 (예, Llama, Gemma)
+        - Tokenizer를 함께 제공, 학습/배포/추론 통합 가능
+        - Hugging Face의 모델을 이용하면 소스코드와 함께 학습된 모델 파라미터 다운로드 및 활용 가능
+        - 다양한 외부 유명 라이브러리와 쉽게 연동 가능(Wandb, Deepspeed, Bitsandbytes 등)
+        - 사실상의 표준 라이브러리
+    - Gradio
+        - Model을 웹으로 손쉽게 사용할 수 있게 해주는 라이브러리이자 플랫폼
+    - Datasets
+        - 데이터셋을 공개하고, 다운로드 할 수 있는 공간
+        - 라이센스 필수 확인 (상용화 가능 여부)
+    - Models
+        - 학습된 모델의 파라미터를 공개하고, 다운로드 할 수 있는 공간
+        - 라이센스 필수 확인 (상용화 가능 여부)
+    - google/gemma-1.1-2b-it
+        - 구글에서 공개한 SLLM (2b, 7b)
+        - Hugging Face 로그인 후 추가로 gemma 라이센스 동의 필요
+- LoRA
+    - Residual Connection
+        - hidden(ℎ0)과 hidden의 변화량(∆ℎ)의 합을 계산
+    - LLM Fine-tuning
+        - Pre-trained LLM의 파라미터 𝑊0가 있을 때
+        - Fine-tuning의 후 파라미터 W를 얻게 됨
+        - 결국 fine-tuning은 파라미터의 𝑊0 의 변화량 ∆𝑊를 학습한 것과 같음
+    - LoRA
+        - LLM을 fine-tuning할 때 기존 LLM 파라미터는 고정하고 최소한의 변경될 부분만을 별도로 학습
+        - Pre-train 파라미터 𝑊0는 학습되지 않도록 고정
+        - Fine-tuning을 위한 파라미터 ∆𝑊만 별도로 학습
+            - 파라미터 수를 줄이기 위해 ∆𝑊를 𝐴 ∈ ℝ𝑟×𝑑와 B ∈ ℝ𝑑×𝑟 분할하여 파라미터 수를 줄임
+        - 낮은 사양의 GPU에서도 fine-tuning 가능
+        - LoRA의 학습 방법이 full fine-tuning과 비슷하거나 성능이 좋음
+        - r의 크기를 줄이더라도 성능이 크게 감소하지 않음
+        - PEFT
+            - Hugging Face PEFT library를 사용해서 쉽게 적용 가능
+    - Bits and Bytes
+        - FP32 vs FP16 vs BF16
+            - FP16 또는 BF16을 사용하면 메모리 및 연산 양을 줄일 수 있음
+            - BF16의 성능이 더 좋음 → 3090 이상의 GPU에서만 지원
+            - T4 GPU를 사용하기 때문에 FP16 방식 사용
+        - INT8 vs INT4
+            - FP32를 INT8, INT4과 같은 매우 작은 범위로 양자화를 해도 비슷한 성능으로 적은 메모리에서 빠른 추론 가능
+        - QLoRA → 수행할 방식
+            - Pre-trained 파라미터는 **4-bit 양자화**로 로딩
+            - 학습할 부분만 LoRA 학습
+            
+
+### RAG(Retrieval-Augmented Generation)
+
+- 문제점
+    - Hallucination: LLM이 개체 간의 정보, 사건 등을 혼합하여 사실이 아닌 그럴듯한 문장을 완성
+    - 최신 정보 미 반영: 사전학습 과정에서 습득된 지식을 기반으로 응답하므로 최신 정보를 반영하기 어려움
+- RAG
+    - 질문 관련 검색된 문서의 내용을 참고해서 답변
+    - 샘플을 잘 설명할 수 있는 특징이 좋은 특징
+    - BM25
+        - TF-IDF의 스코어를 보완하기 위한 파라미터 추가
+- Sentence Transformer
+    - 동일한 BERT를 이용해서 두 문장 A, B의 특징 벡터 𝑢, 𝑣를 획득
+    - 두 벡터 𝑢, 𝑣의 유사도가 높아지도록 학습
+    - Negative Sample을 함께 넣어서 성능 향상 가능
+- DPR (Dense Passage Retrieval)
+    - BERTQ 를 이용해서 질문의 특징 벡터 ℎ𝑞 획득,
+    - BERTP 를 이용해서 문서의 특징 벡터 ℎ𝑝 획득,
+    - 두 벡터 ℎ𝑞, ℎ𝑝의 유사도가 높아지도록 학습
+    - Negative Sample을 함께 넣어서 성능 향상 가능
+
+### 진행 내용
+
+- hugging face 라이브러리를 통해 Gemma 2b 모델 사용
+    - 모델의 크기가 커서 4bit 양자화를 하여 불러옴
+- 학습 시 메모리 초과 방지를 위해 LoRA를 적용하여 학습
+    - max_steps:2000, logging_steps: 100으로 변경 후 학습
+    - 최종 train loss : 1.480900
+- NSMC 리뷰를 학습한 gemma 모델로 평가하여 리뷰의 긍정 유무를 출력하는 챗봇 생성
+
+## 5일차
+
+### 데이터 소개
+
+- 한국어 위키(위키 백과)
+    - 2024년 4월 19일 기준
+    - WikiExtractor를 통해서 생성된 파일 개수는 1,789개
+    - 위키 문서 개수는 1,448,350개
+- 수행 절차
+    - chunk_db.json 생성 → 형태소 단위로 분절
+    - BM25 문서 검색 → 글자 기반 검색
+    - Sentence Transformer 문서 검색
+        - 분절된 chunk들 chunk_embedding 벡터 계산
+        - 질문 query_embedding 벡터 계산
+        - 둘의 유사도 계산 후 가장 높은 유사도의 문장 10개 반환
+        - 검색 방법은 BM25, SentenceTransformer 중 선택
+    - RAG 성능 개선을 위한 조언
+        - 더 큰 파라미터를 가진 SLLM 사용 (https://huggingface.co/google/gemma-1.1-7b-it)
+        - 띄어쓰기 단위가 아닌 의미 단위의 chunk 분할 (gpt-4 활용)
+        - 향상된 검색 기능 활용 (DPR 또는 **DPR+BM25**)
+        - 벡터DB 사용 (많은 문서 저장 가능)
+        - GPT-4를 이용해 질문에 대한 답변을 생성하고 이를 이용해 fine-tuning
+            - 최소 1,000개
+            - 데이터 품질에 따라서 성능 좌우
+            - 상용화의 경우는 라이센스 검토 필요
+
+### 진행 내용
+
+- 한국어 위키 문서 데이터 베이스 생성: chunk 단위로 분리하여 (128단어 = 1라인)으로 문서 저장
+    - 총 350 라인의 chunk_db.json 형태로 저장
+- BM25
+    - 저장해둔 chunk_db.json 파일의 chunk들만 추출
+    - chunk들을 tokenize한 후 BM25로 변형
+    - BM25 검색함수 생성
+        - 검색어와 유사도가 높은 상위 10개의 문서 보여줌
+- SentenceTransformers
+    - 검색을 위한 SentenceTransformer 모델 불러옴
+    - 저장해둔 chunk_db.json 파일의 chunk들만 추출 → 모델을 통해 chunk_embeddings 생성
+    - SentenceTransformers 검색 함수
+        - 검색어와 유사도가 높은 상위 10개의 문서 보여줌
+- RAG QA 챗봇 생성
+    - Gemma 2b 모델 사용
+        - 모델의 크기가 커서 4bit 양자화를 하여 불러옴
+    - 문서들을 참고하여 질문에 맞는 답변을 하는 챗봇 생성
+    - **SLLM RAG with BM25**
+        - RAG chatbot
+            - 질문과 유사도가 높은 상위 5개 이하의  문서들을 bm25를 이용해서 구함
+            - 질문과 함께 문서 5개를 SLLM에 입력(prompt 형태로)
+            - 응답 결과 확인
+    - **SLLM RAG with SentenceTransformers**
+        - RAG chatbot
+            - 질문과 유사도가 높은 상위 5개의  문서들을 SentenceTransformers를 이용해서 구함
+            - 질문과 함께 문서 5개를 SLLM에 입력(prompt 형태로)
+            - 응답 결과 확인
+            
+
+## 6일차
+
+### 진행 내용
+
+- RAG 성능 확장 실습
+    - CHUNK_FN의 전체 문서 사용
+    - 'google/gemma-1.1-7b-it' 로 크기가 더 큰 LLM 적용
+    - BM25
+        - query와 유사도가 높은 상위 15개의 문서 사용
+        - SLLM 모델로 질문에 대한 답변 생성(위의 문서들을 참고하여)
+    - SentenceTransformers
+        - query와 유사도가 높은 상위 5개의 문서 사용 → 메모리 문제
+        - SLLM 모델로 질문에 대한 답변 생성(위의 문서들을 참고하여)
+    - 나무위키 데이터를 추가해여 더 많은 데이터 학습 시도 -> 데이터의 양이 너무 많아 실패
+        - 벡터DB로의 변환이 필요했다
+    - BM25 + DPR기법을 사용하면 검색 성능 향상이 가능하다는 논문이 있음 -> 한국어를 지원하는 DPR 모델이 없어 실패
+        - 추후에 따로 한국어를 학습시켜서 시도해봐야함
+
+## 느낀점
+
+- LLM에 적용되는 기법들을 잘 확인할 수 있었다
+- RAG 기반 LLM을 통한 챗봇 생성 과정을 숙지하고 있어야겠다
+- 데이터 추가, DPR 기법을 사용해서 챗봇 성능 향상을 추후에 시도해봐야겠다
