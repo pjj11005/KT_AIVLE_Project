@@ -1,0 +1,16 @@
+
+.DS_Store
+# Byte-compiled / optimized / DLL files
+__pycache__/
+# *.py[cod]
+
+# C extensions
+*.so
+
+/db.sqlite3
+
+*/migrations/0001_initial.py
+*/migrations/*
+*/new_db/*
+
+*/database/*

@@ -1,0 +1,14 @@
+body {
+    margin: 0;
+}
+
+.session-list-container {
+    min-width: 300px;
+    background: dodgerblue;
+}
+
+.chat-container {
+    max-width: calc(100% - 300px);
+    width: 80%;
+    background: yellow;
+}

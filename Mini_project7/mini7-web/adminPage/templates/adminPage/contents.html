@@ -1,0 +1,82 @@
+{% load static %}
+{% block extrahead %}
+<link rel="stylesheet" href="{% static '/style.css' %}">
+<link rel="stylesheet" href="{% static '/content.css' %}">
+<link rel="stylesheet" href="{% static '/root.css' %}">
+
+{% endblock %}
+<script>
+    function goHome() {
+        window.location.href = window.location.origin + '/adminPage/';
+    }
+
+    function openFileDialog() {
+        document.getElementById('csv_file').click();
+    }
+
+    function submitForm() {
+        document.getElementById('upload-form').submit();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var fileInput = document.getElementById('csv_file');
+        var uploadButton = document.querySelector('.upload-button');
+        fileInput.addEventListener('change', function() {
+            if (fileInput.value) {
+                uploadButton.classList.add('selected');
+            } else {
+                uploadButton.classList.remove('selected');
+            }
+        });
+    });
+</script>
+<body>
+<div class="container">
+    <section class="header">
+        <div class="before-arrow"><button onclick="goHome()"><img src="/svg/arrow.svg" alt="arrow" /></button></div>
+        <div><h1>관리자 페이지</h1></div>
+    </section>
+    <section  class="main_container2">
+
+        <div class='main'>
+            <div class='dataa'>
+                <form id="upload-form" class="upload-form" method="post" action="{% url 'upload_csv' %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                    <input id="csv_file" type="file" name="csv_file" accept=".csv" required>
+                </form>
+
+                <button class="upload-button" onclick="openFileDialog()">파일 선택</button>
+                <button onclick="submitForm()">파일 업로드</button>
+
+                <form method="post" action="{% url 'display' %}">
+                    {% csrf_token %}
+                    <button type="submit">조회</button>
+                </form>
+            </div>
+            <div class="contents">
+                <h1>Database</h1>
+                <table class="contents-table">
+                    <thead>
+                    <tr>
+                        <th class="id">ID</th>
+                        <th class="text">Text</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in data %}
+                    <tr>
+                        <td class="id">{{ item.id }}</td>
+                        <td class='text'>{{ item.text }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+<footer>
+    AIVLE School 1반 2조 © 2024
+</footer>
+</body>

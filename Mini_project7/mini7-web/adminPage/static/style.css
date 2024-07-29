@@ -1,0 +1,331 @@
+/* css를 직접 작성해보세요. */
+body {
+    margin: 0;
+    background: whitesmoke;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.container {
+    width: 100vw;
+    height: auto;
+    background-color: whitesmoke;
+}
+.before-arrow {
+    position: fixed;
+    left: 20px;
+}
+
+button.contents {
+    cursor: pointer;
+}
+
+.contents {
+    height: 420px;
+    border-radius: 45px;
+}
+
+#chatHistory {
+    width: 100%;
+    height: 42px;
+    background: grey;
+}
+
+.before-arrow button {
+    margin: 0;
+}
+
+.header {
+    top: 0;
+    left: 0;
+    position: fixed;
+    width: calc(100% - 12px);
+    height: 82px;
+    background-color: #38b8b2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 12px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 42px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.5);
+}
+.header button{
+    margin-top: 5px;
+    width: 50px;
+    height: 50px;
+    background-color: #38b8b2;
+    cursor: pointer;
+    border: none;
+}
+.main_container {
+    margin-top: 82px;
+    width: 100%;
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.main1{
+    margin-top: 17px;
+    /* border: gray solid 0.3px; */
+    width: 100%;
+    height: 70px;
+    display: flex;
+    overflow: hidden;  
+    box-sizing: border-box;
+    background-color: rgb(251, 249, 249);
+    justify-content: center;
+    align-items: center;
+}
+.box1{
+    display: flex;
+    width: 90%;
+    align-items: center;
+    justify-content: space-between;
+}
+.box1 .add1{
+    display: flex;
+    align-items: center;
+}
+.box1 h2{
+    font-size: 25px;
+    color: #262626;
+}
+.box1 button{
+    padding-top: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(251, 249, 249);
+    border: none;
+    height: 25px;
+    font-size: 20px;
+    margin-left: 30px;
+    font-weight: 500;
+}
+.box1 button img{
+    margin-right: 5px;
+}
+.box1 .search1{
+    display: flex;
+    width: 605px;
+    height: 33px;
+    border-radius: 8px;
+    border: #D4D4D4 solid 1px;
+    padding: 7px;
+    justify-content: space-between;
+}
+.box1 .search1 input{
+    background-color: rgb(251, 249, 249);
+    width: 100%;
+    border: none;
+    height: 100%;
+}
+.box1 .search1 button{
+    width: 30px;
+}
+
+form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.search-button {
+    margin-left: 15px;
+    background: var(--primary-color);
+    border: none;
+    border-radius: 20px;
+    width: 50px;
+    height: 30px;
+    color: white;
+}
+
+.search-button:hover {
+    cursor: pointer;
+    background: rgb(22, 72, 70, 0.8);
+    color: white;
+}
+
+.main2{
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    width: 90%;
+    height: calc(100% - 182px);
+    background-color: rgb(251, 249, 249);
+    align-items: center;
+}
+.date_search{
+    margin-top: 30px;
+    width: 95%;
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.search{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+.search h2{
+    margin: 0;
+    font-size: 20px;
+    color: #262626;
+}
+.search h4{
+    margin: 0;
+    font-size: 15px;
+    color: #262626;
+}
+.date{
+    width: 50%;
+}
+.date h4{
+    margin: 0;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: #262626;
+}
+.sel_date{
+    width: 180px;
+    height: 33px;
+    border: #D4D4D4 solid 1px;
+    border-radius: 10px;
+}
+
+
+.contents {
+    width: 95%;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.contents>h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 28px;
+}
+
+.qna-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.qna-table thead {
+    background-color: #f2f2f2;
+}
+
+.qna-table th, .qna-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.db-table td.text {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.qna-table th {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.qna-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.qna-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.edit-btn, .delete-btn {
+    padding: 5px 10px;
+    margin: 2px;
+    border: none;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+/* table scroll 설정 */
+/* 추가 */
+.qna-table {
+    width: 100%;
+    border-collapse: collapse;
+    display: block;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.qna-table thead,
+.qna-table tbody {
+    display: block;
+}
+
+.qna-table thead {
+    background-color: #f2f2f2;
+}
+
+.qna-table tbody {
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+.qna-table th, .qna-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    width: 33.3%;
+    box-sizing: border-box;
+}
+
+.qna-table th {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.qna-table tr {
+    display: flex;
+}
+
+.qna-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.qna-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+footer {
+    height: 52px;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

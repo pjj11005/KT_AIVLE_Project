@@ -1,0 +1,177 @@
+/* css를 직접 작성해보세요. */
+body {
+    margin: 0;
+    background: var(--primary-color);
+}
+
+.container {
+    width: 100vw;
+    height: 100%;
+    background-color: whitesmoke;
+}
+
+.before-arrow {
+    position: fixed;
+    left: 20px;
+}
+
+.before-arrow button {
+    margin: 0;
+}
+
+.header {
+    width: calc(100% - 12px);
+    height: 82px;
+    background-color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 12px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 42px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.5);
+}
+.header button{
+    margin-top: 5px;
+    width: 50px;
+    height: 50px;
+    background-color: #38b8b2;
+    cursor: pointer;
+    border: none;
+}
+.chat-container {
+    width: 100%;
+    height: calc(100% - 212px);
+    background-color: whitesmoke;
+}
+.question-button{
+    height: 50px;
+    width: 100%;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.question-button button{
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    height: 50px;
+    margin-left: 20px;
+
+    border-radius: 25px;
+    padding: 5px 10px;
+    font-size: 15px;
+}
+
+.question-button button:hover {
+    cursor: pointer;
+    background: rgb(22, 72, 70, 0.8);
+    color: white;
+}
+
+.question-container {
+    width: 100%;
+    height: 72px;
+    background-color: blueviolet;
+    display: flex;
+    flex-direction: row;
+}
+
+.question-container form {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+}
+
+.question-container div {
+    height: 100%;
+}
+
+#file-module-0 {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+}
+
+#question:focus {
+    cursor: pointer;
+}
+
+.submit-button {
+    width: 200px;
+    height: 100%;
+}
+
+#text-button {
+    background-color: #38b8b2;
+    border: none;
+    width: 100%;
+    height: 100%;
+    font-size: 24px;
+    color: white;
+}
+
+#text-button:focus {
+    cursor: pointer;
+}
+
+#chatBox {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    overflow-y: scroll;
+}
+
+.you {
+    word-wrap: break-word;
+    word-break: break-all;
+    margin: 5px 10px;
+    padding: 10px 10px;
+    width: fit-content;
+    max-width: 50%;
+    border-radius: 6px;
+    border: 1px solid #38b8b2;
+    color: white;
+    background: #38b8b2;
+}
+
+.you p {
+    margin: 0;
+}
+
+.gpt {
+    align-self: flex-start;
+    width: auto;
+    margin: 5px 10px;
+    padding: 10px 10px;
+    max-width: 50%;
+    border-radius: 6px;
+    border: 1px solid grey;
+    color: white;
+    background: grey;
+}
+
+.gpt p {
+    margin: 0;
+}
+/*#question {*/
+#question {
+    width: 100%;
+    height: 100%;
+    /*width: calc(100% - 32px);*/
+    /*height: calc(100% - 22px);*/
+    resize: none;
+    border: 1px solid black;
+    font-size: 24px;
+    padding: 10px 10px 10px 20px;
+}

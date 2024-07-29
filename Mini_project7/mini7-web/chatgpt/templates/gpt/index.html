@@ -1,0 +1,117 @@
+{% load static %}
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'root.css' %}" />
+<link rel="stylesheet" href="{% static 'gtp/style.css' %}">
+{% endblock %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const message = "{{ message }}";
+        if (message) {
+            sendFAQ(message);
+        }
+    });
+
+    function sendFAQ(message) {
+        const csrftoken = getCookie('csrftoken')
+        fetchChat(message, csrftoken)
+    }
+
+    function fetchChat(message, csrftoken) {
+        fetch('/chatgpt/chat/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrftoken
+            },
+            body: new URLSearchParams({
+                'message': message
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const chatBox = document.getElementById('chatBox');
+                chatBox.innerHTML += `<div class='you'><p>${message}</p></div>`;
+                chatBox.innerHTML += `<div class='gpt'><p>${data.response}</p></div>`;
+                document.getElementById('question').value = ''; // 질문 입력창 초기화
+                chatBox.scrollTop = chatBox.scrollHeight; // 새로운 메시지가 추가되면 스크롤을 맨 아래로 이동
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function sendMessage() {
+        const message = document.getElementById('question').value;
+        const csrftoken = getCookie('csrftoken');
+        fetchChat(message, csrftoken);
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const inputField = document.getElementById('question');
+        inputField.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Enter 키의 기본 동작 방지
+                sendMessage();
+            }
+        });
+    });
+
+    function goHome() {
+        window.location.href = '/';
+    }
+</script>
+<body>
+    <div class="container">
+        <section class="header">
+            <div class="before-arrow"><button onclick="goHome()"><img src="../svg/arrow.svg" alt="arrow" /></button></div>
+            <div><h1>🤖 AIVLE-BOT 🤖</h1></div>
+        </section>
+        <section id="chatBox" class="chat-container">
+
+        </section>
+        <div class='question-button'>
+            <button onclick="sendFAQ(this.value)" value="에이블 스쿨이 뭐야?">에이블 스쿨이 뭐야?</button>
+            <button onclick="sendFAQ(this.value)" value="에이블 스쿨 지원 조건은 뭐야?">에이블 스쿨 지원 조건은 뭐야?</button>
+            <button onclick="sendFAQ(this.value)" value="에이블 스쿨하면 뭐 배워?">에이블 스쿨하면 뭐 배워?</button>
+            <button onclick="sendFAQ(this.value)" value="에이블 스쿨 어떻게 지원해?">에이블 스쿨 어떻게 지원해?</button>
+        </div> 
+        <section class="question-container">
+            <form onsubmit="sendMessage(event); return false;" enctype="application/x-www-form-urlencoded">
+                {% csrf_token %}
+                <div id="file-module-0">
+                    <input type="text" id="question" name="question" placeholder="Type a message..." />
+                </div>
+                <div class="submit-button">
+                    <button id="text-button" type="submit">Send</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</body>
+
+<!--<form action="chat" method="post" enctype="application/x-www-form-urlencoded">-->
+<!--    {% csrf_token %}-->
+<!--    <div id="file-module-0">-->
+<!--        <label>chatgtp에게 요청하기</label>-->
+<!--        <textarea id="question" name="question"></textarea>-->
+<!--    </div>-->
+<!--    <div><button id="text-button" type="submit" >질문</button></div>-->
+<!--</form>-->

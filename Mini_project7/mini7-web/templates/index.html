@@ -1,0 +1,89 @@
+<!doctype html>
+{% load static %}
+<html>
+    <head>        
+        <title>AIVLE-BOT</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{% static 'base.css' %}" />
+        <link rel="stylesheet" href="{% static 'root.css' %}" />
+    </head>
+    <body>
+        <header class="top-container">
+            <h1><a href="/">KT AIVLE-BOT</a></h1>
+            <ul>
+                <li><a href="/adminPage/">관리자</a></li>
+<!--                <li>회원가입</li>-->
+<!--                <li>로그인</li>-->
+            </ul>
+        </header>
+
+        <main>
+            <h2 class="aivle-title">AI + Vision + aBLE</h2>
+            <h2 class="aivle-sub-title">AIVLE</h2>
+            <img class="main-image" src="../static/images/main-background.png" />
+            <section class="chat-select-container">
+                <h3><a href="/chatgpt/">AILVE Q&A with 🤖</a></h3>
+                <div class="faq">
+                    <a href="/chatgpt/">
+                        <h3>Go Ailve-Bot</h3>
+                        <img src="../static/images/chat-bot.jpg" />
+                    </a>
+                    <ul class="faq-list">
+                        <li><a href="{% url 'chatgpt:index' %}?message=2024년 모집기간이 궁금해요!">2024년 모집기간이 궁금해요! 🤔</a></li>
+                        <li><a href="{% url 'chatgpt:index' %}?message=KT 에이블스쿨은 무료인가요?">KT 에이블스쿨은 무료인가요? 🤔</a></li>
+                        <li><a href="{% url 'chatgpt:index' %}?message=교육 전에 미리 공부하면 좋은 것이 있을까요?">교육 전에 미리 공부하면 좋은 것이 있을까요? 🙂</a></li>
+                        <li><a href="{% url 'chatgpt:index' %}?message=대면 교육도 진행하나요?">대면 교육도 진행하나요? 🙂</a></li>
+                        <li><a href="{% url 'chatgpt:index' %}?message=지원 지역(교육 장소)을 변경할 수 있나요?">지원 지역(교육 장소)을 변경할 수 있나요? 🙂</a></li>
+                        <li><a href="{% url 'chatgpt:index' %}?message=국민내일배움카드가 있어야만 지원이 가능한가요?">국민내일배움카드가 있어야만 지원이 가능한가요?</a></li>
+                    </ul>
+                </div>
+            </section>
+
+<!--            <section class="aivle-container">-->
+<!--                <div class="aivle-top">-->
+<!--                    <a href="https://aivle.kt.co.kr/home/main/indexMain"><img src="../static/images/aivle-logo.png" /></a>-->
+<!--                    <h2><a href="https://aivle.kt.co.kr/home/main/indexMain">AIVLE SCHOOL</a></h2>-->
+<!--                </div>-->
+
+<!--                <ul class="aivle-link-tree">-->
+<!--                    <li><a href="https://aivle.kt.co.kr/home/main/indexMain">AILVE SHCOOL HOME PAGE</a></li>-->
+<!--                    <li class="naver"><a href="https://cafe.naver.com/aivleschool">AILVE SHCOOL NAVER CAFE</a></li>-->
+<!--                    <li class="insta"><a href="https://www.instagram.com/aivlestory/">AILVE SHCOOL INSTAGRAM</a></li>-->
+<!--                </ul>-->
+<!--            </section>-->
+
+        </main>
+
+        <footer>
+            AIVLE School 1반 2조 © 2024
+        </footer>
+
+        <!-- action button  -->
+        <div class="action-container">
+            <a href="https://aivle.kt.co.kr/home/main/indexMain"><img src="../static/images/aivle-logo.png" /></a>
+            <a href="https://www.youtube.com/playlist?list=PL_WCuvyChN3giYr6Xa2gWMOvRjDUrfb0a"><img src="../static/images/youtube-logo.png" /></a>
+            <a href="https://www.instagram.com/aivlestory/"><img src="../static/images/instagram-logo.png" /></a>
+            <a href="https://cafe.naver.com/aivleschool"><img src="../static/images/naver-cafe-logo.png" /></a>
+        </div>
+
+
+        <!-- pop up  -->
+        <div id="popup" class="popup">
+            <div class="inner">
+                <span onClick="close()" class="close-btn">X</span>
+                <div>
+                    <a href="https://aivle.kt.co.kr/home/main/applyMain?mcd=MC00000051"><img class="notice-image" src="../static/images/notice.jpeg" /></a>
+                </div>
+
+            </div>
+        </div>
+    </body>
+    <script>
+        const popup = document.getElementById('popup');
+        const closeBtn = document.querySelector('.close-btn');
+
+        closeBtn.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+    </script>
+</html>

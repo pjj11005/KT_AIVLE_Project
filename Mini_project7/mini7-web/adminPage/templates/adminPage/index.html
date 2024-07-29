@@ -1,0 +1,127 @@
+{% load static %}
+{% block extrahead %}
+<link rel="stylesheet" href="{% static '/style.css' %}">
+<link rel="stylesheet" href="{% static '/root.css' %}">
+{% endblock %}
+<script>
+    function goHome() {
+        window.location.href = '/';
+    }
+    function goSetting() {
+        window.location.href ='/adminPage/admin/';
+    }
+
+    window.onload=function(){
+        const today = new Date();
+
+        document.querySelectorAll('.sel_date').forEach(input=>{
+            input.addEventListener('change',function(){
+                const SelectedDate=new Date(this.value);
+                if (SelectedDate>today){
+                    alert ("오늘 이후의 날짜는 선택하실 수 없습니다.")
+                    this.value='';
+                }
+            });
+            
+        })
+    }
+
+</script>
+<body>
+    <div class="container">
+        <section class="header">
+            <div class="before-arrow"><button onclick="goHome()"><img src="../svg/arrow.svg" alt="arrow" /></button></div>
+            <div><h1>관리자 페이지</h1></div>
+        </section>
+        <section  class="main_container">
+            <div class='main1'>
+                <div class='box1'>
+                    <div class='add1'>
+                        {% comment %} <h2>Add new post</h2> {% endcomment %}
+                        <button class='button_add' onclick="location.href='{% url 'contents' %}'">
+                            <img src="../svg/plus.svg" alt="plus"/>Content
+                        </button>
+                        <button onclick="goSetting()"><img src="../svg/settings.svg" alt="settings"/>Settings</button>
+                    </div>
+                    <div class='search1'>
+                        <input
+                            placeholder="검색" 
+                        />
+                        <button>
+                            <img src="../svg/search.svg" alt="search" />
+                        </button>
+                    </div>
+                </div>    
+            </div>
+            <div class='main2'>
+                <div class='date_search'>
+                    <div class='search'>
+                        <h2>사용자 이력조회</h2>
+                        <h4>Please check usage history</h4>
+                    </div>
+                    <div class='date'>
+                        <h4>날짜 조회</h4>
+                        {% comment %} <div>
+                            <input class='sel_date'
+                                type='date'
+                            />
+                            ~
+                            <input class='sel_date' 
+                                type='date'
+                            />
+                        </div>
+                     {% endcomment %}
+                     <form method="post">
+                        {% csrf_token %}
+                        <div>
+                            <input class='sel_date' type='date' name='start_date' />
+                            ~
+                            <input class='sel_date' type='date' name='end_date' />
+                        </div>
+                        <button class="search-button" type="submit">조회</button>
+                    </form>
+                    </div>
+                </div>
+                <div class="contents">
+                    <h1>📄 QnA Results 📄</h1>
+                    <table class="qna-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Question</th>
+                                <th>Answer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in result %}
+                        <tr>
+                            <td>{{ item.timestamp }}</td>
+                            <td>{{ item.question|slice:":10" }}{% if item.question|length > 10 %}...{% endif %}</td>
+                            <td>{{ item.answer|slice:":10" }}{% if item.answer|length > 10 %}...{% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+<!--                        <tbody>-->
+<!--                            {% for item in result %}-->
+<!--                                <tr>-->
+<!--                                    <td>{{ item.timestamp }}</td>-->
+<!--                                    <td>{{ item.question|slice:":10" }}{% if item.question|length > 10 %}...{% endif %}</td>-->
+<!--                                    <td>{{ item.answer|slice:":10" }}{% if item.answer|length > 10 %}...{% endif %}</td>-->
+<!--                                    <td>-->
+<!--                                        <button class="edit-btn">Edit</button>-->
+<!--                                        <button class="delete-btn">Delete</button>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                            {% endfor %}-->
+<!--                        </tbody>-->
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer>
+        AIVLE School 1반 2조 © 2024
+    </footer>
+</body>
+
+

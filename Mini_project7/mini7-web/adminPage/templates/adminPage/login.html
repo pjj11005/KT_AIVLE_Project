@@ -1,0 +1,115 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'root.css' %}" />
+<link rel="stylesheet" href="{% static '/login.css' %}">
+<script>
+    function goHome() {
+        window.location.href = '/';
+    }
+    function login() {
+        const id = document.getElementById('username').value;
+        const pw = document.getElementById('pw').value;
+        const csrftoken = getCookie('csrftoken');
+
+        if(id.length > 0 && pw.length > 0) {
+            fetch('/adminPage/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrftoken
+                },
+                body: new URLSearchParams({
+                    'id': id,
+                    'password': pw
+                })
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                
+
+                window.location.href = '/adminPage/';
+                console.log(window.location.href)
+
+            }).catch(error => console.error("Error : ", error));
+        } else {
+            alert('ID, PASSWORD를 모두 입력해주세요.');
+        }
+
+
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const idField = document.getElementById('username');
+        const pwField = document.getElementById('pw');
+
+        idField.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Enter 키의 기본 동작 방지
+                if(idField.value.length > 0 && pwField.value.length > 0) {
+                    login();
+                } else {
+                    alert('ID, PASSWORD를 입력해주세요.')
+                }
+            }
+        });
+
+        pwField.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Enter 키의 기본 동작 방지
+                if(idField.value.length > 0 && pwField.value.length > 0) {
+                    login();
+                } else {
+                    alert('ID, PASSWORD를 입력해주세요.')
+                }
+            }
+        });
+    });
+</script>
+<body>
+    <div class="container">
+        <section class="header">
+            <div class="before-arrow"><button onclick="goHome()"><img src="/svg/arrow.svg" alt="arrow" /></button></div>
+            <h1><a href="/">AIVLE SHCOOL CAHT-BOT ADMIN</a></h1>
+        </section>
+        <main>
+            <div class="login-container">
+                <div class="login-title">
+                    <div><h2>LOGIN</h2></div>
+                </div>
+                <div class="login">
+                    <form onsubmit="login(); return false;" enctype="application/x-www-form-urlencoded">
+                        {% csrf_token %}
+                        <div>
+                            <label for="username">ID</label>
+                            <input type="text" id="username" name="id" placeholder="ID">
+                        </div>
+
+                        <div>
+                            <label for="pw">PW</label>
+                            <input type="password" id="pw" name="password" placeholder="PASSWORD">
+                        </div>
+                        <button onsubmit="login()" type="submit" class="login-button">SUBMIT</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer>
+        AIVLE School 1반 2조 © 2024
+    </footer>
+</body>
