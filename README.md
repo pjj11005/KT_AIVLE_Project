@@ -24,3 +24,7 @@
 
 1. 시계열 데이터 기반 상품 판매량 예측(RNN, LSTM, CNN)
 2. LLM 리뷰 긍정 유무 출력 QA 챗봇, RAG 기반 LLM QA 챗봇 구현(RAG, Gemma)
+
+### [7차 미니 프로젝트](https://github.com/pjj11005/KT_AIVLE_Project/tree/main/Mini_project7)
+
+1. 에이블스쿨 지원자를 위한 QA챗봇 웹서비스(RAG, LangChain, OpenAI, Django, AWS, Chroma)
